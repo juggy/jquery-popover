@@ -1,0 +1,19 @@
+<a id="my-button">Popover</a>
+
+...
+
+<div id="my-popover">
+  <div class="header">
+    ...
+  </div>
+  <div class="content">
+    ...
+  </div>
+</div>
+
+
+...
+
+$('#my-button').popover({header: '#my-popover > .header',
+    content: '#my-popover > .content'});
+
