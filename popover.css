@@ -17,34 +17,29 @@
   -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   -moz-transition: opacity 0.25s linear;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  transition: opacity 0.25s linear;
-}
-.popover.active {
-  opacity: 1;
-}
-.popover > .triangle {
-  position: absolute;
-  top: -50px;
-  float: left;
-  font-size: 0px;
-  line-height: 0%;
-  width: 0px;
-  border-top: 25px solid rgba(0, 0, 0, 0);
-  border-left: 25px solid rgba(0, 0, 0, 0);
-  border-right: 25px solid rgba(0, 0, 0, 0);
-  border-bottom: 25px solid black;
-}
-.popover > .header {
-  font-weight: bold;
-  margin: 0;
-  padding: 3px;
-  height: 40px;
-  color: white;
-  background-color: black;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.6)), color-stop(0.2, rgba(255, 255, 255, 0.4)), color-stop(0.5, rgba(255, 255, 255, 0.2)), color-stop(0.5, transparent), to(transparent));
-}
-.popover > .content {
-  min-width: 200px;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
+  transition: opacity 0.25s linear; }
+  .popover.active {
+    opacity: 1; }
+  .popover > .triangle {
+    position: absolute;
+    top: -50px;
+    float: left;
+    font-size: 0px;
+    line-height: 0%;
+    width: 0px;
+    border-top: 25px solid rgba(0,0,0,0);
+    border-left: 25px solid rgba(0,0,0,0);
+    border-right: 25px solid rgba(0,0,0,0);
+    border-bottom: 25px solid black; }
+  .popover > .header {
+    font-weight: bold;
+    margin: 0;
+    padding: 3px;
+    height: 40px;
+    color: white;
+    background-color: black;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.6)), color-stop(0.2, rgba(255, 255, 255, 0.4)), color-stop(0.5, rgba(255, 255, 255, 0.2)), color-stop(0.5, transparent), to(transparent) ); }
+  .popover > .content {
+    min-width: 200px;
+    overflow-x: hidden;
+    overflow-y: auto; }
