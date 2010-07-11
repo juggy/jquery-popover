@@ -3,97 +3,104 @@ $.fn.popover = function(options) {
   var defaults = {
     openEvent: null,
     closeEvent: null
-  };
+  }
   var options = $.extend(defaults, options);
 
-  var openedPO = null;
-  var button = $(this);
+  // HTML floater box
   var header = $(options.header).detach();
   var content = $(options.content).detach();
-  var floater;
+  var floater = $('<div class="popover">'
+        + '<div class="triangle"></div>'
+        + '<div class="header"></div>'
+        + '<div class="content"></div>'
+        + '</div>').appendTo('body');
+  $('.header', floater).append(header);
+  $('.content', floater).append(content);
 
-  var hidePopover = function(content) {
-    content.removeClass("active");
-    content.attr("style", "");
-    if ($.isFunction(options.closeEvent)) options.closeEvent();
-    openedPO = null;
-    $(document).unbind("click");
-    return false;
-  }
-
-  var showPopover = function() {
-    //already opened
-    if (openedPO === this){
-      return true;
-    } else if(openedPO != null){
-      // Close the previous one
-      hidePopover($(".floater", openedPO));
+  // Document click closes active popover
+  $.fn.popover.openedPopup = null;
+  $(document).bind("click", function() {
+    if ($.fn.popover.openedPopup != null
+      && ($(event.target).parents(".popover").length === 0)
+      && (!$(event.target).hasClass('popover-button'))) {
+      $.fn.popover.openedPopup.trigger('hidePopover');
     }
-    
-    triangle = $(".floater > .triangle", this);
-    leftOff = 0;
-    topOff = 0;
-    docWidth = $(document).width();
-    docHeight = $(document).height();
-    triangleSize = parseInt(triangle.css("border-bottom-width"));
-    contentWidth = floater.outerWidth();
-    contentHeight = floater.outerHeight();
-    buttonWidth = button.outerWidth();
-    buttonHeight = button.outerHeight()
-    offset = button.offset();
-    
-    //Calculate topOff
+  });
+
+  var showPopover = function(button) {
+    // Already opened?
+    if ($.fn.popover.openedPopup === button) {
+      $.fn.popover.openedPopup.trigger('hidePopover');
+      return false;
+    } else if($.fn.popover.openedPopup != null){
+      $.fn.popover.openedPopup.trigger('hidePopover');
+    }
+    var triangle = $('.triangle', floater).click(function() {
+        button.trigger('hidePopover') });
+
+    // position and resize
+    var leftOff = 0;
+    var topOff = 0;
+    var docWidth = $(document).width();
+    var docHeight = $(document).height();
+    var triangleSize = parseInt(triangle.css("border-bottom-width"));
+    var contentWidth = floater.outerWidth();
+    var contentHeight = floater.outerHeight();
+    var buttonWidth = button.outerWidth();
+    var buttonHeight = button.outerHeight()
+    var offset = button.offset();
+
+    // Calculate topOff
     topOff = offset.top + buttonHeight + triangleSize;
-    diffHeight = docHeight - (topOff + contentHeight + triangleSize );
-    if(diffHeight < 0){
+    var diffHeight = docHeight - (topOff + contentHeight + triangleSize);
+    if (diffHeight < 0){
       //resize the floater
       floater.height(floater.height() + diffHeight);
     }
-    
-    //Calculate leftOff
+
+    // Calculate leftOff
     leftOff = offset.left + ( buttonWidth - contentWidth)/2;
-    diffWidth = 0
-    if(leftOff < 0){
-      //out of the document at left
+    var diffWidth = 0
+    if (leftOff < 0) {
+      // out of the document at left
       diffWidth = -leftOff;
-    }else if ( leftOff + contentWidth > docWidth){
-      //left of the screen right
-      
+    } else if (leftOff + contentWidth > docWidth) {
+      // left of the screen right
       diffWidth = leftOff + contentWidth - docWidth;
     }
     
-    //position floater
+    // position triangle
     triangle.css("left", contentWidth/2 - triangleSize + diffWidth);
-    
-    //resize the floater for overflow
-    floater.children(".content").css("max-height", floater.height() -parseInt(floater.children(".header").css("height")) - 7);
-    
+
+    // resize the floater for overflow
+    floater.children(".content").css("max-height", floater.height()
+        - parseInt(floater.children(".header").css("height")) - 7);
+
     floater.offset({
       top: topOff,
       left: leftOff - diffWidth
     });
-    
-    $(document).click(function(event){
-      if ($(event.target).parents(".popover").length === 0){
-        return hidePopover(floater);
-      }
-    });
     floater.show();
     //Timeout for webkit transitions to take effect
-    window.setTimeout(function(){floater.addClass("active");}, 0)
+    window.setTimeout(function(){ floater.addClass("active"); }, 0)
     if($.isFunction(options.openEvent)) options.openEvent();
-    openedPO = this;
+    $.fn.popover.openedPopup = button;
+    button.addClass('popover-on');
     return false;
   }
 
   this.each(function(){
-    $(this).addClass("popover");
-    floater = $('<div class="floater"><div class="triangle"></div>'
-        + '<div class="header"></div><div class="content"></div>'
-        + '</div>').appendTo(this);
-    $(".header", floater).append(header);
-    $(".content", floater).append(content);
-    $(this).click(showPopover);
+    var button = $(this);
+    button.addClass("popover-button");
+    button.bind('click', function() { showPopover(button) });
+    button.bind('hidePopover', function() {
+      button.removeClass('popover-on');
+      floater.removeClass("active");
+      floater.attr("style", "");
+      if ($.isFunction(options.closeEvent)) options.closeEvent();
+      $.fn.popover.openedPopup = null;
+      return false;
+    });
   });
 }
 })(jQuery);
