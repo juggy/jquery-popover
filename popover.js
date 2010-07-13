@@ -58,15 +58,18 @@ $.fn.popover = function(options) {
       floater.height(floater.height() + diffHeight);
     }
 
+    // Padding against document borders
+    var padding = 18;   
+
     // Calculate leftOff
-    leftOff = offset.left + ( buttonWidth - contentWidth)/2;
-    var diffWidth = 0
-    if (leftOff < 0) {
+    leftOff = offset.left + (buttonWidth - contentWidth)/2;
+    var diffWidth = 0;
+    if (leftOff < padding) {
       // out of the document at left
-      diffWidth = -leftOff;
+      diffWidth = leftOff - padding;
     } else if (leftOff + contentWidth > docWidth) {
       // left of the screen right
-      diffWidth = leftOff + contentWidth - docWidth;
+      diffWidth = leftOff + contentWidth - docWidth + padding;
     }
     
     // position triangle
