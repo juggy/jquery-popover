@@ -93,6 +93,7 @@ $.fn.popover = function(options) {
     var button = $(this);
     button.addClass("popover-button");
     button.bind('click', function() { showPopover(button) });
+    button.bind('showPopover', function() { showPopover(button) });
     button.bind('hidePopover', function() {
       button.removeClass('popover-on');
       floater.removeClass("active");
