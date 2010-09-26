@@ -19,10 +19,10 @@ $.fn.popover = function(options) {
 
   // Document click closes active popover
   $.fn.popover.openedPopup = null;
-  $(document).bind("click", function() {
+  $(document).bind("click", function(event) {
     if ($.fn.popover.openedPopup != null
-      && ($(event.target).parents(".popover").length === 0)
-      && (!$(event.target).hasClass('popover-button'))) {
+        && ($(event.target).parents(".popover").length === 0)
+        && (!$(event.target).hasClass('popover-button'))) {
       $.fn.popover.openedPopup.trigger('hidePopover');
     }
   });
