@@ -100,7 +100,7 @@ $.fn.popover = function(options) {
     button.bind('hidePopover', function() {
       button.removeClass('popover-on');
       floater.removeClass("active");
-      window.setTimeout(function() { floater.attr("style", ""); }, 200);
+      floater.attr("style", "");
       if ($.isFunction(options.closeEvent)) options.closeEvent();
       $.fn.popover.openedPopup = null;
       return false;
