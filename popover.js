@@ -38,6 +38,9 @@ $.fn.popover = function(options) {
     var triangle = $('.triangle', floater).click(function() {
         button.trigger('hidePopover') });
 
+    // Set this first for the layout calculations to work.
+    floater.css('display', 'block');
+
     // position and resize
     var leftOff = 0;
     var topOff = 0;
@@ -59,7 +62,7 @@ $.fn.popover = function(options) {
     }
 
     // Padding against document borders
-    var padding = 18;   
+    var padding = 18;
 
     // Calculate leftOff
     leftOff = offset.left + (buttonWidth - contentWidth)/2;
@@ -71,7 +74,7 @@ $.fn.popover = function(options) {
       // left of the screen right
       diffWidth = leftOff + contentWidth - docWidth + padding;
     }
-    
+
     // position triangle
     triangle.css("left", contentWidth/2 - triangleSize + diffWidth);
 
@@ -99,8 +102,7 @@ $.fn.popover = function(options) {
     button.bind('showPopover', function() { showPopover(button) });
     button.bind('hidePopover', function() {
       button.removeClass('popover-on');
-      floater.removeClass("active");
-      floater.attr("style", "");
+      floater.removeClass("active").attr("style", "").css('display', 'none');
       if ($.isFunction(options.closeEvent)) options.closeEvent();
       $.fn.popover.openedPopup = null;
       return false;
