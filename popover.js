@@ -78,18 +78,18 @@ $.fn.popover = function(options) {
     // position triangle
     triangle.css("left", contentWidth/2 - triangleSize + diffWidth);
 
-    // resize the floater for overflow
-    floater.children(".content").css("max-height", floater.height()
-        - parseInt(floater.children(".header").css("height")) - 7);
-
     floater.offset({
       top: topOff,
       left: leftOff - diffWidth
     });
     floater.show();
     //Timeout for webkit transitions to take effect
-    window.setTimeout(function(){ floater.addClass("active"); }, 0)
-    if($.isFunction(options.openEvent)) options.openEvent();
+    window.setTimeout(function() {
+      floater.addClass("active");
+      // Fixes some browser bugs
+      $(window).resize();
+    }, 0);
+    if ($.isFunction(options.openEvent)) options.openEvent();
     $.fn.popover.openedPopup = button;
     button.addClass('popover-on');
     return false;
@@ -103,8 +103,14 @@ $.fn.popover = function(options) {
     button.bind('hidePopover', function() {
       button.removeClass('popover-on');
       floater.removeClass("active").attr("style", "").css('display', 'none');
-      if ($.isFunction(options.closeEvent)) options.closeEvent();
+      if ($.isFunction(options.closeEvent)) {
+        options.closeEvent();
+      }
       $.fn.popover.openedPopup = null;
+      window.setTimeout(function() {
+        // Fixes some browser bugs
+        $(window).resize();
+      }, 0);
       return false;
     });
   });
