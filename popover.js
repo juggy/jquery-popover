@@ -2,7 +2,9 @@
 $.fn.popover = function(options) {
   var defaults = {
     openEvent: null,
-    closeEvent: null
+    closeEvent: null,
+    offsetX: 0,
+    offsetY: 0
   }
   var options = $.extend(defaults, options);
 
@@ -79,8 +81,8 @@ $.fn.popover = function(options) {
     triangle.css("left", contentWidth/2 - triangleSize + diffWidth);
 
     floater.offset({
-      top: topOff,
-      left: leftOff - diffWidth
+      top: topOff + options.offsetY,
+      left: leftOff - diffWidth + options.offsetX
     });
     floater.show();
     //Timeout for webkit transitions to take effect
